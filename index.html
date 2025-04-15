@@ -1,32 +1,1159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مولّد السيرة الذاتية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="أداة لإنشاء سيرة ذاتية احترافية بتنسيق PDF">
+  <title>مولّد السيرة الذاتية الاحترافي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --success-color: #27ae60;
+      --info-color: #2980b9;
+      --danger-color: #e74c3c;
+      --light-color: #ecf0f1;
+      --dark-color: #2c3e50;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: var(--box-shadow);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .preview-container {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+      display: none;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: var(--primary-color);
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--light-color);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1.2em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #219653;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--info-color);
+      color: white;
+      margin-left: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #1a6fa8;
+      transform: translateY(-2px);
+    }
+
+    .btn-preview {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-preview:hover {
+      background-color: #1a252f;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+
+    .btn i {
+      margin-left: 8px;
+    }
+
+    .dynamic-field {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .year-select {
+      min-width: 120px;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .preview-section {
+      margin-bottom: 2rem;
+    }
+
+    .preview-section h3 {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--light-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .preview-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .preview-item h4 {
+      margin-bottom: 0.5rem;
+      color: var(--dark-color);
+    }
+
+    .preview-item p {
+      margin: 0.25rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .buttons-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .btn-secondary {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
+
+      .year-select {
+        min-width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <header>مولّد السيرة الذاتية - CV Generator</header>
-  <form id="cvForm">
-    <label for="name">الاسم الكامل:</label>
-    <input type="text" id="name" name="name" required>
+  <header>
+    <div class="container">
+      <h1><i class="fas fa-file-alt"></i> مولّد السيرة الذاتية</h1>
+      <p>أنشئ سيرتك الذاتية بسهولة واحترافية</p>
+    </div>
+  </header>
 
-    <label for="email">البريد الإلكتروني:</label>
-    <input type="email" id="email" name="email" required>
+  <main class="container">
+    <div id="successAlert" class="alert alert-success">
+      تم إنشاء السيرة الذاتية بنجاح! سيبدأ التحميل تلقائياً.
+    </div>
 
-    <label for="education">المؤهل العلمي:</label>
-    <textarea id="education" name="education" rows="3" required></textarea>
+    <div class="form-container">
+      <form id="cvForm">
+        <h2 class="section-title">المعلومات الشخصية</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">الاسم الكامل *</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="jobTitle">المسمى الوظيفي *</label>
+            <input type="text" id="jobTitle" name="jobTitle" class="form-control" required>
+          </div>
+        </div>
 
-    <label for="skills">المهارات:</label>
-    <textarea id="skills" name="skills" rows="3" required></textarea>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">البريد الإلكتروني *</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">رقم الهاتف</label>
+            <input type="tel" id="phone" name="phone" class="form-control">
+          </div>
+        </div>
 
-    <label for="experience">الخبرات:</label>
-    <textarea id="experience" name="experience" rows="4"></textarea>
+        <div class="form-group">
+          <label for="address">العنوان</label>
+          <input type="text" id="address" name="address" class="form-control">
+        </div>
 
-    <button type="button" onclick="generateCV()">تحميل السيرة الذاتية</button>
-  </form>
-  <script src="script.js"></script>
+        <div class="form-group">
+          <label for="about">نبذة عنك *</label>
+          <textarea id="about" name="about" class="form-control" required></textarea>
+        </div>
+
+        <h2 class="section-title">المؤهلات العلمية</h2>
+        <div id="educationSection">
+          <div class="dynamic-field">
+            <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i
+                class="fas fa-times"></i></button>
+            <div class="form-row">
+              <div class="form-group">
+                <label>المؤهل *</label>
+                <input type="text" name="education_degree[]" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>الجامعة/المعهد *</label>
+                <input type="text" name="education_institution[]" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>التخصص *</label>
+                <input type="text" name="education_major[]" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>سنة الالتحاق *</label>
+                <select name="education_start_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>سنة التخرج *</label>
+                <select name="education_end_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                  <option value="حتى الآن">حتى الآن</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addEducation()"><i class="fas fa-plus"></i> إضافة
+          مؤهل</button>
+
+        <h2 class="section-title">الخبرات العملية</h2>
+        <div id="experienceSection">
+          <div class="dynamic-field">
+            <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i
+                class="fas fa-times"></i></button>
+            <div class="form-row">
+              <div class="form-group">
+                <label>المسمى الوظيفي *</label>
+                <input type="text" name="experience_title[]" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>اسم الشركة *</label>
+                <input type="text" name="experience_company[]" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>سنة البدء *</label>
+                <select name="experience_start_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>سنة الانتهاء *</label>
+                <select name="experience_end_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                  <option value="حتى الآن">حتى الآن</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>وصف المهام والإنجازات</label>
+              <textarea name="experience_desc[]" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addExperience()"><i class="fas fa-plus"></i> إضافة
+          خبرة</button>
+
+        <h2 class="section-title">المهارات</h2>
+        <div id="skillsSection">
+          <div class="dynamic-field">
+            <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i
+                class="fas fa-times"></i></button>
+            <div class="form-group">
+              <label>اسم المهارة *</label>
+              <input type="text" name="skill_name[]" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>مستوى الإتقان *</label>
+              <select name="skill_level[]" class="form-control" required>
+                <option value="مبتدئ">مبتدئ</option>
+                <option value="متوسط">متوسط</option>
+                <option value="متقدم">متقدم</option>
+                <option value="خبير">خبير</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addSkill()"><i class="fas fa-plus"></i> إضافة
+          مهارة</button>
+
+        <h2 class="section-title">اللغات</h2>
+        <div id="languageSection">
+          <div class="dynamic-field">
+            <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i
+                class="fas fa-times"></i></button>
+            <div class="form-row">
+              <div class="form-group">
+                <label>اللغة *</label>
+                <input type="text" name="language_name[]" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>مستوى الإتقان *</label>
+                <select name="language_level[]" class="form-control" required>
+                  <option value="مبتدئ">مبتدئ</option>
+                  <option value="متوسط">متوسط</option>
+                  <option value="جيد">جيد</option>
+                  <option value="ممتاز">ممتاز</option>
+                  <option value="لغة أم">لغة أم</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addLanguage()"><i class="fas fa-plus"></i> إضافة
+          لغة</button>
+
+        <h2 class="section-title">الشهادات والدورات</h2>
+        <div id="certificationSection">
+          <div class="dynamic-field">
+            <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i
+                class="fas fa-times"></i></button>
+            <div class="form-row">
+              <div class="form-group">
+                <label>اسم الشهادة/الدورة *</label>
+                <input type="text" name="certification_name[]" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>المصدر *</label>
+                <input type="text" name="certification_source[]" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>سنة البدء *</label>
+                <select name="certification_start_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>سنة الانتهاء *</label>
+                <select name="certification_end_year[]" class="form-control year-select" required>
+                  <option value="">اختر السنة</option>
+                  <option value="حتى الآن">حتى الآن</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addCertification()"><i class="fas fa-plus"></i> إضافة
+          شهادة</button>
+
+        <div class="buttons-container">
+          <button type="button" class="btn btn-preview" onclick="showPreview()"><i class="fas fa-eye"></i>
+            معاينة</button>
+          <button type="button" class="btn btn-primary" onclick="generatePDF()"><i class="fas fa-file-pdf"></i> تحميل
+            PDF</button>
+          <button type="reset" class="btn btn-secondary"><i class="fas fa-redo"></i> إعادة تعيين</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="previewContainer" class="preview-container">
+      <div class="buttons-container" style="margin-top: 0;">
+        <button type="button" class="btn btn-secondary" onclick="hidePreview()"><i class="fas fa-arrow-right"></i>
+          العودة للتعديل</button>
+        <button type="button" class="btn btn-primary" onclick="generatePDF()"><i class="fas fa-file-pdf"></i> تحميل
+          PDF</button>
+      </div>
+      <div id="previewContent"></div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // Initialize jsPDF
+    const {jsPDF} = window.jspdf;
+
+    // Generate years for dropdown (من 1980 إلى السنة الحالية + 5 سنوات)
+    function generateYears() {
+      const currentYear = new Date().getFullYear();
+      const years = [];
+      for (let year = 1980; year <= currentYear + 5; year++) {
+        years.push(year);
+      }
+      return years.reverse(); // نعكس المصفوفة لتبدأ من السنة الأحدث
+    }
+
+    // Fill year dropdowns
+    function fillYearDropdowns() {
+      const years = generateYears();
+      const yearSelects = document.querySelectorAll('.year-select');
+
+      yearSelects.forEach(select => {
+        // لا نملأ إذا كان يحتوي بالفعل على خيارات (مثل "حتى الآن")
+        if (select.querySelectorAll('option').length <= 2) {
+          // حفظ الخيارات الموجودة مسبقاً
+          const existingOptions = Array.from(select.options).map(opt => opt.value);
+
+          years.forEach(year => {
+            // إضافة السنة فقط إذا لم تكن موجودة مسبقاً
+            if (!existingOptions.includes(year.toString())) {
+              const option = document.createElement('option');
+              option.value = year;
+              option.textContent = year;
+              select.appendChild(option);
+            }
+          });
+        }
+      });
+    }
+
+    // Add Education Field
+    function addEducation() {
+      const container = document.getElementById('educationSection');
+      const newField = document.createElement('div');
+      newField.className = 'dynamic-field';
+      newField.innerHTML = `
+        <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>المؤهل *</label>
+            <input type="text" name="education_degree[]" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>الجامعة/المعهد *</label>
+            <input type="text" name="education_institution[]" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>التخصص *</label>
+            <input type="text" name="education_major[]" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>سنة الالتحاق *</label>
+            <select name="education_start_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>سنة التخرج *</label>
+            <select name="education_end_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+              <option value="حتى الآن">حتى الآن</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(newField);
+      fillYearDropdowns();
+    }
+
+    // Add Experience Field
+    function addExperience() {
+      const container = document.getElementById('experienceSection');
+      const newField = document.createElement('div');
+      newField.className = 'dynamic-field';
+      newField.innerHTML = `
+        <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>المسمى الوظيفي *</label>
+            <input type="text" name="experience_title[]" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>اسم الشركة *</label>
+            <input type="text" name="experience_company[]" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>سنة البدء *</label>
+            <select name="experience_start_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>سنة الانتهاء *</label>
+            <select name="experience_end_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+              <option value="حتى الآن">حتى الآن</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>وصف المهام والإنجازات</label>
+          <textarea name="experience_desc[]" class="form-control" rows="3"></textarea>
+        </div>
+      `;
+      container.appendChild(newField);
+      fillYearDropdowns();
+    }
+
+    // Add Skill Field
+    function addSkill() {
+      const container = document.getElementById('skillsSection');
+      const newField = document.createElement('div');
+      newField.className = 'dynamic-field';
+      newField.innerHTML = `
+        <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+        <div class="form-group">
+          <label>اسم المهارة *</label>
+          <input type="text" name="skill_name[]" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>مستوى الإتقان *</label>
+          <select name="skill_level[]" class="form-control" required>
+            <option value="مبتدئ">مبتدئ</option>
+            <option value="متوسط">متوسط</option>
+            <option value="متقدم">متقدم</option>
+            <option value="خبير">خبير</option>
+          </select>
+        </div>
+      `;
+      container.appendChild(newField);
+    }
+
+    // Add Language Field
+    function addLanguage() {
+      const container = document.getElementById('languageSection');
+      const newField = document.createElement('div');
+      newField.className = 'dynamic-field';
+      newField.innerHTML = `
+        <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>اللغة *</label>
+            <input type="text" name="language_name[]" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>مستوى الإتقان *</label>
+            <select name="language_level[]" class="form-control" required>
+              <option value="مبتدئ">مبتدئ</option>
+              <option value="متوسط">متوسط</option>
+              <option value="جيد">جيد</option>
+              <option value="ممتاز">ممتاز</option>
+              <option value="لغة أم">لغة أم</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(newField);
+    }
+
+    // Add Certification Field
+    function addCertification() {
+      const container = document.getElementById('certificationSection');
+      const newField = document.createElement('div');
+      newField.className = 'dynamic-field';
+      newField.innerHTML = `
+        <button type="button" class="btn btn-danger remove-btn" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>اسم الشهادة/الدورة *</label>
+            <input type="text" name="certification_name[]" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>المصدر *</label>
+            <input type="text" name="certification_source[]" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>سنة البدء *</label>
+            <select name="certification_start_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>سنة الانتهاء *</label>
+            <select name="certification_end_year[]" class="form-control year-select" required>
+              <option value="">اختر السنة</option>
+              <option value="حتى الآن">حتى الآن</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(newField);
+      fillYearDropdowns();
+    }
+
+    // Remove Field
+    function removeField(button) {
+      const field = button.closest('.dynamic-field');
+      if (document.querySelectorAll('.dynamic-field').length > 1) {
+        field.remove();
+      } else {
+        alert('يجب أن يكون هناك على الأقل حقل واحد');
+      }
+    }
+
+    // Show Preview
+    function showPreview() {
+      if (!document.getElementById('cvForm').checkValidity()) {
+        alert('الرجاء إكمال جميع الحقول المطلوبة');
+        return;
+      }
+
+      const previewContent = document.getElementById('previewContent');
+      previewContent.innerHTML = '';
+
+      // Personal Information
+      let personalInfoHTML = `
+        <div class="preview-section">
+          <h3>المعلومات الشخصية</h3>
+          <div class="preview-item">
+            <h4>${document.getElementById('name').value}</h4>
+            <p>${document.getElementById('jobTitle').value}</p>
+          </div>
+          <div class="preview-item">
+            <p><strong>البريد الإلكتروني:</strong> ${document.getElementById('email').value}</p>
+            <p><strong>رقم الهاتف:</strong> ${document.getElementById('phone').value || 'غير محدد'}</p>
+            <p><strong>العنوان:</strong> ${document.getElementById('address').value || 'غير محدد'}</p>
+          </div>
+          <div class="preview-item">
+            <h4>نبذة عني</h4>
+            <p>${document.getElementById('about').value}</p>
+          </div>
+        </div>
+      `;
+      previewContent.innerHTML += personalInfoHTML;
+
+      // Education
+      let educationHTML = '<div class="preview-section"><h3>المؤهلات العلمية</h3>';
+      const educationDegrees = document.getElementsByName('education_degree[]');
+
+      for (let i = 0; i < educationDegrees.length; i++) {
+        const startYear = document.getElementsByName('education_start_year[]')[i].value;
+        const endYear = document.getElementsByName('education_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+
+        educationHTML += `
+          <div class="preview-item">
+            <h4>${educationDegrees[i].value}</h4>
+            <p><strong>الجامعة/المعهد:</strong> ${document.getElementsByName('education_institution[]')[i].value}</p>
+            <p><strong>التخصص:</strong> ${document.getElementsByName('education_major[]')[i].value}</p>
+            <p><strong>المدة:</strong> ${duration}</p>
+          </div>
+        `;
+      }
+      educationHTML += '</div>';
+      previewContent.innerHTML += educationHTML;
+
+      // Experience
+      let experienceHTML = '<div class="preview-section"><h3>الخبرات العملية</h3>';
+      const experienceTitles = document.getElementsByName('experience_title[]');
+
+      for (let i = 0; i < experienceTitles.length; i++) {
+        const startYear = document.getElementsByName('experience_start_year[]')[i].value;
+        const endYear = document.getElementsByName('experience_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+        const desc = document.getElementsByName('experience_desc[]')[i].value;
+
+        experienceHTML += `
+          <div class="preview-item">
+            <h4>${experienceTitles[i].value}</h4>
+            <p><strong>الشركة:</strong> ${document.getElementsByName('experience_company[]')[i].value}</p>
+            <p><strong>المدة:</strong> ${duration}</p>
+            ${desc ? `<p><strong>الوصف:</strong> ${desc}</p>` : ''}
+          </div>
+        `;
+      }
+      experienceHTML += '</div>';
+      previewContent.innerHTML += experienceHTML;
+
+      // Skills
+      let skillsHTML = '<div class="preview-section"><h3>المهارات</h3>';
+      const skillNames = document.getElementsByName('skill_name[]');
+
+      for (let i = 0; i < skillNames.length; i++) {
+        skillsHTML += `
+          <div class="preview-item">
+            <p><strong>${skillNames[i].value}:</strong> ${document.getElementsByName('skill_level[]')[i].value}</p>
+          </div>
+        `;
+      }
+      skillsHTML += '</div>';
+      previewContent.innerHTML += skillsHTML;
+
+      // Languages
+      let languagesHTML = '<div class="preview-section"><h3>اللغات</h3>';
+      const languageNames = document.getElementsByName('language_name[]');
+
+      for (let i = 0; i < languageNames.length; i++) {
+        languagesHTML += `
+          <div class="preview-item">
+            <p><strong>${languageNames[i].value}:</strong> ${document.getElementsByName('language_level[]')[i].value}</p>
+          </div>
+        `;
+      }
+      languagesHTML += '</div>';
+      previewContent.innerHTML += languagesHTML;
+
+      // Certifications
+      let certificationsHTML = '<div class="preview-section"><h3>الشهادات والدورات</h3>';
+      const certificationNames = document.getElementsByName('certification_name[]');
+
+      for (let i = 0; i < certificationNames.length; i++) {
+        const startYear = document.getElementsByName('certification_start_year[]')[i].value;
+        const endYear = document.getElementsByName('certification_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+
+        certificationsHTML += `
+          <div class="preview-item">
+            <h4>${certificationNames[i].value}</h4>
+            <p><strong>المصدر:</strong> ${document.getElementsByName('certification_source[]')[i].value}</p>
+            <p><strong>المدة:</strong> ${duration}</p>
+          </div>
+        `;
+      }
+      certificationsHTML += '</div>';
+      previewContent.innerHTML += certificationsHTML;
+
+      // Show preview and hide form
+      document.getElementById('previewContainer').style.display = 'block';
+      document.querySelector('.form-container').style.display = 'none';
+    }
+
+    // Hide Preview
+    function hidePreview() {
+      document.getElementById('previewContainer').style.display = 'none';
+      document.querySelector('.form-container').style.display = 'block';
+    }
+
+    // Generate PDF
+    function generatePDF() {
+      if (!document.getElementById('cvForm').checkValidity()) {
+        alert('الرجاء إكمال جميع الحقول المطلوبة');
+        return;
+      }
+
+      // Show success alert
+      document.getElementById('successAlert').style.display = 'block';
+
+      // Create a new PDF instance
+      const doc = new jsPDF();
+
+      // Set document metadata
+      doc.setProperties({
+        title: 'السيرة الذاتية - ' + document.getElementById('name').value,
+        subject: 'السيرة الذاتية',
+        author: document.getElementById('name').value,
+        keywords: 'cv, resume, سيرة ذاتية',
+      });
+
+      // Add title
+      doc.setFontSize(22);
+      doc.setTextColor(44, 62, 80);
+      doc.text(document.getElementById('name').value, 105, 20, {align: 'center'});
+
+      doc.setFontSize(16);
+      doc.setTextColor(52, 152, 219);
+      doc.text(document.getElementById('jobTitle').value, 105, 28, {align: 'center'});
+
+      // Add personal info section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('المعلومات الشخصية', 14, 40);
+      doc.setDrawColor(52, 152, 219);
+      doc.setLineWidth(0.5);
+      doc.line(14, 42, 60, 42);
+
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`البريد الإلكتروني: ${document.getElementById('email').value}`, 14, 50);
+      doc.text(`رقم الهاتف: ${document.getElementById('phone').value || 'غير محدد'}`, 14, 58);
+      doc.text(`العنوان: ${document.getElementById('address').value || 'غير محدد'}`, 14, 66);
+
+      // Add about section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('نبذة عني', 14, 80);
+      doc.line(14, 82, 40, 82);
+
+      doc.setFontSize(12);
+      const aboutText = doc.splitTextToSize(document.getElementById('about').value, 180);
+      doc.text(aboutText, 14, 90);
+
+      let yPosition = doc.previousAutoTable ? doc.previousAutoTable.finalY + 20 : 110;
+
+      // Add education section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('المؤهلات العلمية', 14, yPosition);
+      doc.line(14, yPosition + 2, 60, yPosition + 2);
+      yPosition += 10;
+
+      const educationDegrees = document.getElementsByName('education_degree[]');
+      const educationData = [];
+
+      for (let i = 0; i < educationDegrees.length; i++) {
+        const startYear = document.getElementsByName('education_start_year[]')[i].value;
+        const endYear = document.getElementsByName('education_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+
+        educationData.push([
+          document.getElementsByName('education_degree[]')[i].value,
+          document.getElementsByName('education_major[]')[i].value,
+          document.getElementsByName('education_institution[]')[i].value,
+          duration
+        ]);
+      }
+
+      doc.autoTable({
+        startY: yPosition,
+        head: [['المؤهل', 'التخصص', 'الجامعة/المعهد', 'المدة']],
+        body: educationData,
+        headStyles: {
+          fillColor: [52, 152, 219],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          halign: 'right',
+          font: 'Tajawal'
+        },
+        columnStyles: {
+          0: {cellWidth: 'auto'},
+          1: {cellWidth: 'auto'},
+          2: {cellWidth: 'auto'},
+          3: {cellWidth: 'auto'}
+        }
+      });
+
+      yPosition = doc.previousAutoTable.finalY + 15;
+
+      // Add experience section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('الخبرات العملية', 14, yPosition);
+      doc.line(14, yPosition + 2, 60, yPosition + 2);
+      yPosition += 10;
+
+      const experienceTitles = document.getElementsByName('experience_title[]');
+      const experienceData = [];
+
+      for (let i = 0; i < experienceTitles.length; i++) {
+        const startYear = document.getElementsByName('experience_start_year[]')[i].value;
+        const endYear = document.getElementsByName('experience_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+
+        experienceData.push([
+          document.getElementsByName('experience_title[]')[i].value,
+          document.getElementsByName('experience_company[]')[i].value,
+          duration,
+          document.getElementsByName('experience_desc[]')[i].value || 'غير محدد'
+        ]);
+      }
+
+      doc.autoTable({
+        startY: yPosition,
+        head: [['المسمى الوظيفي', 'الشركة', 'الفترة', 'الوصف']],
+        body: experienceData,
+        headStyles: {
+          fillColor: [52, 152, 219],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          halign: 'right',
+          font: 'Tajawal'
+        }
+      });
+
+      yPosition = doc.previousAutoTable.finalY + 15;
+
+      // Add skills section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('المهارات', 14, yPosition);
+      doc.line(14, yPosition + 2, 30, yPosition + 2);
+      yPosition += 10;
+
+      const skillNames = document.getElementsByName('skill_name[]');
+      const skillsData = [];
+
+      for (let i = 0; i < skillNames.length; i++) {
+        skillsData.push([
+          document.getElementsByName('skill_name[]')[i].value,
+          document.getElementsByName('skill_level[]')[i].value
+        ]);
+      }
+
+      doc.autoTable({
+        startY: yPosition,
+        head: [['المهارة', 'المستوى']],
+        body: skillsData,
+        headStyles: {
+          fillColor: [52, 152, 219],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          halign: 'right',
+          font: 'Tajawal'
+        }
+      });
+
+      yPosition = doc.previousAutoTable.finalY + 15;
+
+      // Add languages section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('اللغات', 14, yPosition);
+      doc.line(14, yPosition + 2, 25, yPosition + 2);
+      yPosition += 10;
+
+      const languageNames = document.getElementsByName('language_name[]');
+      const languagesData = [];
+
+      for (let i = 0; i < languageNames.length; i++) {
+        languagesData.push([
+          document.getElementsByName('language_name[]')[i].value,
+          document.getElementsByName('language_level[]')[i].value
+        ]);
+      }
+
+      doc.autoTable({
+        startY: yPosition,
+        head: [['اللغة', 'المستوى']],
+        body: languagesData,
+        headStyles: {
+          fillColor: [52, 152, 219],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          halign: 'right',
+          font: 'Tajawal'
+        }
+      });
+
+      yPosition = doc.previousAutoTable.finalY + 15;
+
+      // Add certifications section
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('الشهادات والدورات', 14, yPosition);
+      doc.line(14, yPosition + 2, 55, yPosition + 2);
+      yPosition += 10;
+
+      const certificationNames = document.getElementsByName('certification_name[]');
+      const certificationsData = [];
+
+      for (let i = 0; i < certificationNames.length; i++) {
+        const startYear = document.getElementsByName('certification_start_year[]')[i].value;
+        const endYear = document.getElementsByName('certification_end_year[]')[i].value;
+        const duration = endYear === 'حتى الآن' ? `${startYear} - حتى الآن` : `${startYear} - ${endYear}`;
+
+        certificationsData.push([
+          document.getElementsByName('certification_name[]')[i].value,
+          document.getElementsByName('certification_source[]')[i].value,
+          duration
+        ]);
+      }
+
+      if (certificationsData.length > 0) {
+        doc.autoTable({
+          startY: yPosition,
+          head: [['اسم الشهادة', 'المصدر', 'المدة']],
+          body: certificationsData,
+          headStyles: {
+            fillColor: [52, 152, 219],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold'
+          },
+          styles: {
+            halign: 'right',
+            font: 'Tajawal'
+          }
+        });
+      } else {
+        doc.setFontSize(12);
+        doc.text('لا توجد شهادات مسجلة', 14, yPosition);
+      }
+
+      // Save the PDF
+      setTimeout(() => {
+        doc.save('السيرة الذاتية - ' + document.getElementById('name').value + '.pdf');
+        document.getElementById('successAlert').style.display = 'none';
+      }, 1000);
+    }
+
+    // Fill year dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      fillYearDropdowns();
+
+      // Also fill any existing dropdowns in dynamic fields
+      const yearSelects = document.querySelectorAll('.year-select');
+      const years = generateYears();
+
+      yearSelects.forEach(select => {
+        if (select.querySelectorAll('option').length <= 2) {
+          // حفظ الخيارات الموجودة مسبقاً
+          const existingOptions = Array.from(select.options).map(opt => opt.value);
+
+          years.forEach(year => {
+            // إضافة السنة فقط إذا لم تكن موجودة مسبقاً
+            if (!existingOptions.includes(year.toString())) {
+              const option = document.createElement('option');
+              option.value = year;
+              option.textContent = year;
+              select.appendChild(option);
+            }
+          });
+        }
+      });
+    });
+  </script>
 </body>
+
 </html>
