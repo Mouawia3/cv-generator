@@ -527,7 +527,7 @@
       for (let year = 1980; year <= currentYear + 5; year++) {
         years.push(year);
       }
-      return years.reverse(); // نعكس المصفوفة لتبدأ من السنة الأحدث
+      return years.reverse();
     }
 
     // Fill year dropdowns
@@ -536,13 +536,10 @@
       const yearSelects = document.querySelectorAll('.year-select');
 
       yearSelects.forEach(select => {
-        // لا نملأ إذا كان يحتوي بالفعل على خيارات (مثل "حتى الآن")
         if (select.querySelectorAll('option').length <= 2) {
-          // حفظ الخيارات الموجودة مسبقاً
           const existingOptions = Array.from(select.options).map(opt => opt.value);
 
           years.forEach(year => {
-            // إضافة السنة فقط إذا لم تكن موجودة مسبقاً
             if (!existingOptions.includes(year.toString())) {
               const option = document.createElement('option');
               option.value = year;
@@ -877,7 +874,8 @@
       }
 
       // Show success alert
-      document.getElementById('successAlert').style.display = 'block';
+      const alertElement = document.getElementById('successAlert');
+      alertElement.style.display = 'block';
 
       // Create a new PDF instance
       const doc = new jsPDF();
@@ -923,7 +921,7 @@
       const aboutText = doc.splitTextToSize(document.getElementById('about').value, 180);
       doc.text(aboutText, 14, 90);
 
-      let yPosition = doc.previousAutoTable ? doc.previousAutoTable.finalY + 20 : 110;
+      let yPosition = 110;
 
       // Add education section
       doc.setFontSize(14);
@@ -1122,36 +1120,22 @@
       }
 
       // Save the PDF
-      setTimeout(() => {
+      try {
         doc.save('السيرة الذاتية - ' + document.getElementById('name').value + '.pdf');
-        document.getElementById('successAlert').style.display = 'none';
-      }, 1000);
+
+        // إخفاء الرسالة بعد ثانيتين
+        setTimeout(() => {
+          alertElement.style.display = 'none';
+        }, 2000);
+      } catch (error) {
+        alert('حدث خطأ أثناء إنشاء الملف: ' + error.message);
+        alertElement.style.display = 'none';
+      }
     }
 
     // Fill year dropdowns when page loads
     document.addEventListener('DOMContentLoaded', function () {
       fillYearDropdowns();
-
-      // Also fill any existing dropdowns in dynamic fields
-      const yearSelects = document.querySelectorAll('.year-select');
-      const years = generateYears();
-
-      yearSelects.forEach(select => {
-        if (select.querySelectorAll('option').length <= 2) {
-          // حفظ الخيارات الموجودة مسبقاً
-          const existingOptions = Array.from(select.options).map(opt => opt.value);
-
-          years.forEach(year => {
-            // إضافة السنة فقط إذا لم تكن موجودة مسبقاً
-            if (!existingOptions.includes(year.toString())) {
-              const option = document.createElement('option');
-              option.value = year;
-              option.textContent = year;
-              select.appendChild(option);
-            }
-          });
-        }
-      });
     });
   </script>
 </body>
